@@ -12,7 +12,8 @@
     import WarehouseIcon from "$icons/Warehouse.svelte";
     import SellIcon from "$icons/Sell.svelte";
 
-    import { exportTransfer } from "$lib/utils/exportHelpers.js";
+    import { exportToExcel } from "$lib/excel.js";
+    import ExcelIcon from "$icons/Excel.svelte";
 
     let title = "Transfer Listesi";
 
@@ -186,12 +187,7 @@
 
                     transfer_assets = transfer_assets.data;
 
-                    console.log(transfer_assets);
-
-                    exportTransfer({
-                        assets: transfer_assets,
-                        docNumber: item.doc
-                    });
+                    // ...existing code...
                 });
                 alert.neutral("İptal");
                 alert.show();

@@ -35,9 +35,9 @@ export const API = async (url, data, headers = {}) => {
         headers.token = TOKEN;
     }
 
-    if (CNF.DEBUG) {
-        console.log('API CALL [', url, ']:\n', data);
-    }
+    // if (CNF.DEBUG) {
+    //     console.log('API CALL [', url, ']:\n', data);
+    // }
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), TIMEOUT);

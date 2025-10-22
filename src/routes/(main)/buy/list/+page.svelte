@@ -5,7 +5,6 @@
     import Container from "$comp/dashboard/Container.svelte";
     import TableOnline from "$comp/table/TableOnline.svelte";
     import { Money } from "$lib/number";
-    import { exportTransaction } from "$lib/utils/exportHelpers.js";
 
     import ViewIcon from "$icons/View.svelte";
     import CompleteIcon from "$icons/Complete.svelte";
@@ -13,6 +12,7 @@
     import TransferIcon from "$icons/Transfer.svelte";
     import PrinterIcon from "$icons/Printer.svelte";
     import ExcelIcon from "$icons/Excel.svelte";
+    import { exportToExcel } from "$src/lib/excel";
 
     let title = "Alım Listesi";
 
@@ -191,20 +191,38 @@
             icon: ExcelIcon,
             test: (item) => item.complete === 1,
             action: async (item) => {
-                let excel_req = await API("/buy/excel", {
-                    buy_no: item.no,
+                const response = await API("/buy/excel", {
+                    no: item.no,
                 });
 
-                if (!excel_req || !excel_req.success) {
+                if (!response || !response.success) {
                     Alerter.Error("Excel Oluşturma Hatası", excel_req.message);
                     return false;
                 }
+                
 
-                exportTransaction({
-                    data: excel_req.data,
-                    docNumber: item.doc,
-                    date: time(item.moment),
-                    type: 'buy'
+                exportToExcel({
+                    headers: ["Stok Kodu", "Stok Adı", "Adet", "Maliyet", "Vergi", "Ara Toplam", "Toplam"],
+                    fileName: 'alim_listesi_' + Date.now().toString(),
+                    data: response?.data?.entries?.map((item) => [
+                        item.stock.code,
+                        item.stock.name,
+                        item.stock.count,
+                        item.cost,
+                        item.tax,
+                        item.sub,
+                        item.total
+                    ]),
+                    footerData: [
+                        [],
+                        [],
+                        [],
+                        [],
+                        [],
+                        ["Ara Toplam", response?.data?.sub],
+                        ["Vergi Toplamı", response?.data?.tax],
+                        ["Toplam", response?.data?.total],
+                    ],
                 });
             },
         },

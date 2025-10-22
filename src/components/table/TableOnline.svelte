@@ -105,7 +105,7 @@
     // };
 
     import { onMount } from "svelte";
-    import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from '@lucide/svelte'
+    import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from 'lucide-svelte'
     import Add from "$comp/table/icons/Add.svelte";
     import Edit from "$comp/table/icons/Edit.svelte";
     import Delete from "$comp/table/icons/Delete.svelte";

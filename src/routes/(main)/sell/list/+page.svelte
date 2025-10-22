@@ -1,7 +1,7 @@
 <script>
     import { API, PAGINATION } from "$lib/api.js";
+    import { exportToExcel } from "$src/lib/excel";
     import { goto } from "$app/navigation";
-    import { exportTransaction } from "$lib/utils/exportHelpers.js";
     import { Money } from "$lib/number";
 
     import Container from "$comp/dashboard/Container.svelte";
