@@ -1,0 +1,44 @@
+<script>
+    import {onMount} from "svelte";
+    let open = false;
+    export let options = {};
+    export let selected = "_____";
+    export let action = (key, value) => {};
+
+    let dropdown_dom;
+
+    onMount(() => {
+        const handle_click = (event) => {
+            if (dropdown_dom && !dropdown_dom.contains(event.target)) {
+                open = false;
+            }
+        };
+
+        ß(document).on("click", handle_click);
+
+        return () => {
+            ß(document).off("click", handle_click);
+        };
+    });
+</script>
+
+<div class="relative inline-block" bind:this={dropdown_dom}>
+    <button class="flex items-center justify-between text-reverse cursor-pointer" onclick={() => (open = !open)}>
+        <span><slot/></span>
+    </button>
+    {#if open}
+        <div class="absolute left-0 mt-2 min-w-40 bg-back border border-border-mid rounded-lg shadow-lg z-50 animate-fade-in p-2" tabindex="-1">
+            {#each Object.entries(options) as [key, value]}
+                <button
+                    class="block w-full text-left px-5 py-2 text-reverse hover:bg-middle transition cursor-pointer rounded-md"
+                    onclick={() => {
+                        selected = key;
+                        action(key, value);
+                        open = false;
+                    }}>
+                    {value}
+                </button>
+            {/each}
+        </div>
+    {/if}
+</div>
